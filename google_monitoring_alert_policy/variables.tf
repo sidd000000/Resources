@@ -41,16 +41,3 @@ variable "conditions" {
   default     = {}
 }
 
-variable "label_extractors" {
-  description = "A map from a label key string to an extractor expression which is used to extract data from a log entry field and assign as the label value. Each label key specified in the LabelDescriptor must have an associated extractor expression in this map. The syntax of the extractor expression is the same as for the valueExtractor field."
-  type        = map(string)
-  default     = {}
-}
-
-
-
-variable "bucket_options" {
-  description = "Map containing bucketOptions. The bucketOptions are required when the logs-based metric is using a DISTRIBUTION value type and it describes the bucket boundaries used to create a histogram of the extracted values."
-  type        = any
-  default     = {}
-}
