@@ -51,3 +51,9 @@ variable "metric_descriptor" {
   type        = any
   default     = {}
 }
+
+variable "bucket_options" {
+  description = "Map containing bucketOptions. The bucketOptions are required when the logs-based metric is using a DISTRIBUTION value type and it describes the bucket boundaries used to create a histogram of the extracted values."
+  type        = any
+  default     = {}
+}

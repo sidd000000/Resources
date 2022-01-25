@@ -31,3 +31,43 @@ resource "google_logging_metric" "main" {
       }
     }
   }
+
+# Bucket Options capped to 1 block
+  dynamic "bucket_options" {
+    for_each = length(keys(var.bucket_options)) == 0 ? [] : [var.bucket_options]
+
+    content {
+
+      # Linear Buckets allowing several blocks
+      dynamic "linear_buckets" {
+        for_each = length(keys(lookup(bucket_options.value, "linear_buckets", {}))) == 0 ? [] : [lookup(bucket_options.value, "linear_buckets", {})]
+
+        content {
+          num_finite_buckets = lookup(linear_buckets.value, "num_finite_buckets", null)
+          width              = lookup(linear_buckets.value, "width", null)
+          offset             = lookup(linear_buckets.value, "offset", null)
+        }
+      }
+
+      # Exponential Buckets allowing several blocks
+      dynamic "exponential_buckets" {
+        for_each = length(keys(lookup(bucket_options.value, "exponential_buckets", {}))) == 0 ? [] : [lookup(bucket_options.value, "exponential_buckets", {})]
+
+        content {
+          num_finite_buckets = lookup(exponential_buckets.value, "num_finite_buckets", null)
+          growth_factor      = lookup(exponential_buckets.value, "growth_factor", null)
+          scale              = lookup(exponential_buckets.value, "scale", null)
+        }
+      }
+
+      # Explicit Buckets allowing several blocks
+      dynamic "explicit_buckets" {
+        for_each = length(keys(lookup(bucket_options.value, "explicit_buckets", {}))) == 0 ? [] : [lookup(bucket_options.value, "explicit_buckets", {})]
+
+        content {
+          bounds = explicit_buckets.value.bounds
+        }
+      }
+    }
+  }
+}

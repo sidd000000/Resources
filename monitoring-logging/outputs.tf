@@ -37,3 +37,8 @@ output metric_descriptor {
   description = "The metric descriptor associated with the logs-based metric."
   value       = concat(google_logging_metric.main.*.metric_descriptor, [""])[0]
 }
+
+output bucket_options {
+  description = "The bucketOptions of this metric."
+  value       = concat(google_logging_metric.main.*.bucket_options, [""])[0]
+}
