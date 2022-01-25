@@ -32,7 +32,7 @@ resource "google_logging_metric" "main" {
     }
   }
 
-# Bucket Options capped to 1 block
+  # Bucket Options capped to 1 block
   dynamic "bucket_options" {
     for_each = length(keys(var.bucket_options)) == 0 ? [] : [var.bucket_options]
 
