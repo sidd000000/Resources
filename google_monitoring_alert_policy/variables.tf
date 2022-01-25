@@ -41,3 +41,32 @@ variable "conditions" {
   default     = {}
 }
 
+variable "enabled" {
+  description = "Whether or not the policy is enabled. The default is true"
+  type        = bool
+  default     = true
+}
+
+variable "notification_channels" {
+  description = "How to combine the results of multiple conditions to determine if an incident should be opened. Possible values are AND, OR, and AND_WITH_MATCHING_RESOURCE"
+  type        = any
+  default     = null
+}
+
+variable "alert_strategy" {
+  description = "Control over how this alert policy's notification channels are notified."
+  type        = any
+  default     = {}
+}
+
+variable "user_labels" {
+  description = "his field is intended to be used for organizing and identifying the AlertPolicy objects.The field can contain up to 64 entries. Each key and value is limited to 63 Unicode characters or 128 bytes, whichever is smaller."
+  type        = any
+  default     = {}
+}
+
+variable "documentation" {
+  description = "Documentation that is included with notifications and incidents related to this policy."
+  type        = any
+  default     = {}
+}

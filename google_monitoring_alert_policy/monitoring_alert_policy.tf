@@ -1,6 +1,10 @@
 resource "google_monitoring_alert_policy" "alert_policy" {
-  display_name = "My Alert Policy"
-  combiner     = "OR"
+  display_name =  var.display_name
+  combiner     =  var.combiner
+  enabled      =  var.enabled
+  user_labels  =  var.user_labels
+  project      =  var.project
+
   dynamic "conditions" {
     for_each = length(keys(var.conditions)) == 0 ? [] : [var.conditions]
 
