@@ -60,9 +60,8 @@ variable "alert_strategy" {
 }
 
 variable "user_labels" {
-  description = "his field is intended to be used for organizing and identifying the AlertPolicy objects.The field can contain up to 64 entries. Each key and value is limited to 63 Unicode characters or 128 bytes, whichever is smaller."
-  type        = any
-  default     = {}
+  description = "This field is intended to be used for organizing and identifying the AlertPolicy objects"
+  type        = string
 }
 
 variable "documentation" {

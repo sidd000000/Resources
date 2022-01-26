@@ -4,6 +4,7 @@ resource "google_monitoring_alert_policy" "alert_policy" {
   enabled      =  var.enabled
   user_labels  =  var.user_labels
   project      =  var.project
+  notification_channels = ""
 
   dynamic "conditions" {
     for_each = length(keys(var.conditions)) == 0 ? [] : [var.conditions]
@@ -101,4 +102,24 @@ resource "google_monitoring_alert_policy" "alert_policy" {
             }
          }
     }
+
+    dynamic "alert_strategy" {
+    for_each = length(keys(var.alert_strategy)) == 0 ? [] : [var.alert_strategy]
+
+    content {
+      notification_rate_limit = lookup(alert_strategy.value, "notification_rate_limit", null)
+      auto_close                 = lookup(alert_strategy.value, "auto_close", null)
+    }
+}
+
+    dynamic "documentation" {
+    for_each = length(keys(var.documentation)) == 0 ? [] : [var.documentation]
+
+    content {
+      content   = lookup(documentation.value, "content", null)
+      mime_type = lookup(documentation.value, "mime_type", null)
+    }
+}
+      
+
 }
