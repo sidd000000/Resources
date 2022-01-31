@@ -47,12 +47,6 @@ variable "enabled" {
   default     = true
 }
 
-variable "notification_channels" {
-  description = "How to combine the results of multiple conditions to determine if an incident should be opened. Possible values are AND, OR, and AND_WITH_MATCHING_RESOURCE"
-  type        = any
-  default     = null
-}
-
 variable "alert_strategy" {
   description = "Control over how this alert policy's notification channels are notified."
   type        = any
@@ -61,7 +55,7 @@ variable "alert_strategy" {
 
 variable "user_labels" {
   description = "This field is intended to be used for organizing and identifying the AlertPolicy objects"
-  type        = any
+  type        = map(string)
   default     = {}
 }
 
@@ -71,3 +65,8 @@ variable "documentation" {
   default     = {}
 }
 
+variable "notification_channels" {
+  description = "list of notification channels"
+  type        = list(string)
+  default     = []
+}

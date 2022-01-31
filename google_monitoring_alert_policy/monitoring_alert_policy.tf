@@ -11,7 +11,6 @@ resource "google_monitoring_alert_policy" "alert_policy" {
 
     content {
       name                                = conditions.value.name
-      ##condition_monitoring_query_language = lookup(conditions.value, "condition_monitoring_query_language", null)
       display_name                        = conditions.value.display_name
      
       
