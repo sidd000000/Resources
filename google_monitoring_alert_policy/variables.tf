@@ -61,7 +61,8 @@ variable "alert_strategy" {
 
 variable "user_labels" {
   description = "This field is intended to be used for organizing and identifying the AlertPolicy objects"
-  type        = string
+  type        = any
+  default     = {}
 }
 
 variable "documentation" {
@@ -69,3 +70,4 @@ variable "documentation" {
   type        = any
   default     = {}
 }
+

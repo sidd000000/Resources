@@ -4,18 +4,16 @@ resource "google_monitoring_alert_policy" "alert_policy" {
   enabled      =  var.enabled
   user_labels  =  var.user_labels
   project      =  var.project
-  notification_channels = ""
+  notification_channels = var.notification_channels
 
   dynamic "conditions" {
     for_each = length(keys(var.conditions)) == 0 ? [] : [var.conditions]
 
     content {
       name                                = conditions.value.name
-      condition_monitoring_query_language = lookup(conditions.value, "condition_monitoring_query_language", null)
-      condition_threshold                 = lookup(conditions.value, "condition_threshold", null)
+      ##condition_monitoring_query_language = lookup(conditions.value, "condition_monitoring_query_language", null)
       display_name                        = conditions.value.display_name
-      condition_matched_log               = conditions.value.condition_matched_log 
-
+     
       
       dynamic "condition_absent" {
          
@@ -44,17 +42,35 @@ resource "google_monitoring_alert_policy" "alert_policy" {
                     count     = lookup(trigger.value, "count", null)
                 }
             }
-  
         }
-      }   
-            dynamic "condition_threshold" {
-                for_each = lookup(conditions.value, "condition_threshold", [])
+    }   
+
+       dynamic "condition_monitoring_query_language" {
+         
+        for_each = lookup(conditions.value, "condition_monitoring_query_language", [])
+            content {
+                duration             = condition_monitoring_query_language.value.duration
+                query           = condition_monitoring_query_language.value.query
+                
+                dynamic "trigger" {
+                        for_each = lookup(condition_monitoring_query_language.value, "trigger", [])
+                        content {
+                             percent       = lookup(trigger.value, "percent", null)
+                             count         = lookup(trigger.value, "count", null)             
+                        }
+                    }
+            }
+       }
+
+           
+       dynamic "condition_threshold" {
+         for_each = lookup(conditions.value, "condition_threshold", [])
                 content {
                     threshold_value      = lookup(condition_threshold.value, "threshold_value", null)
                     denominator_filter   = lookup(condition_threshold.value, "denominator_filter", null)
-                    duration             = conditions.value.duration
-                    comparison           = conditions.value.comparison
-                    filter               = lookup(conditions.value, "filter", null)
+                    duration             = condition_threshold.value.duration
+                    comparison           = condition_threshold.value.comparison
+                    filter               = lookup(condition_threshold.value, "filter", null)
 
                     dynamic "denominator_aggregations" {
                         for_each = lookup(condition_threshold.value, "denominator_aggregations", [])
@@ -72,7 +88,6 @@ resource "google_monitoring_alert_policy" "alert_policy" {
                         content {
                              percent       = lookup(trigger.value, "percent", null)
                              count         = lookup(trigger.value, "count", null)             
-
                         }
                     }
 
@@ -87,6 +102,10 @@ resource "google_monitoring_alert_policy" "alert_policy" {
                         }
                     }
 
+                }
+
+            }
+
                 dynamic "condition_matched_log" {
                     for_each = lookup(conditions.value, "condition_matched_log", [])
                         content {
@@ -96,10 +115,6 @@ resource "google_monitoring_alert_policy" "alert_policy" {
 
                         }
                     }
-
-                }
-
-            }
          }
     }
 
@@ -109,6 +124,13 @@ resource "google_monitoring_alert_policy" "alert_policy" {
     content {
       notification_rate_limit = lookup(alert_strategy.value, "notification_rate_limit", null)
       auto_close              = lookup(alert_strategy.value, "auto_close", null)
+      
+      dynamic "notification_rate_limit" {
+           for_each = lookup(alert_strategy.value, "notification_rate_limit", [])
+             content {
+                period       = lookup(notification_rate_limit.value, "period", null)         
+              }
+          }
     }
 }
 
