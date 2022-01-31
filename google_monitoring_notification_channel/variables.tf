@@ -24,7 +24,8 @@ variable "sensitive_labels" {
 
 variable "user_labels" {
   description = "User-supplied key/value data that does not need to conform to the corresponding NotificationChannelDescriptor's schema, unlike the labels field. This field is intended to be used for organizing and identifying the NotificationChannel objects.The field can contain up to 64 entries."
-  type        = string
+  type        = any
+  default     = {}
 }
 
 variable "description" {
@@ -42,3 +43,11 @@ variable "enabled" {
   type        = bool
   default     = true
 }
+
+variable "email_address" {
+  description = "to be used in labels"
+  type        = string
+}
+
+
+

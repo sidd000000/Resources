@@ -108,7 +108,7 @@ resource "google_monitoring_alert_policy" "alert_policy" {
 
     content {
       notification_rate_limit = lookup(alert_strategy.value, "notification_rate_limit", null)
-      auto_close                 = lookup(alert_strategy.value, "auto_close", null)
+      auto_close              = lookup(alert_strategy.value, "auto_close", null)
     }
 }
 
